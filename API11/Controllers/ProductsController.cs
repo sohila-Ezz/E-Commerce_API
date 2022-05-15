@@ -48,23 +48,23 @@ namespace API11.Controllers
             return Ok(products);
         }
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProductAsync([FromForm] CreateProductDto pro)
+        public async Task<ActionResult<Product>> CreateProductAsync( CreateProductDto pro)
         {
-            if(pro.Image == null) return BadRequest("Image Is Required ");
-            if (!allowExxtention.Contains(Path.GetExtension(pro.Image.FileName).ToLower()))
-                return BadRequest("Onl .png or .jpg images are allow ");
-            var isValidCategory = await _context.categories.AnyAsync(c => c.Id == pro.Category_Id);
-            if (!isValidCategory)
-                return BadRequest("Not Valide Category Id ");
-            using var dataStream = new MemoryStream();
-            await pro.Image.CopyToAsync(dataStream);
+            //if(pro.Image == null) return BadRequest("Image Is Required ");
+            //if (!allowExxtention.Contains(Path.GetExtension(pro.Image.FileName).ToLower()))
+            //    return BadRequest("Onl .png or .jpg images are allow ");
+            //var isValidCategory = await _context.categories.AnyAsync(c => c.Id == pro.Category_Id);
+            //if (!isValidCategory)
+            //    return BadRequest("Not Valide Category Id ");
+            //using var dataStream = new MemoryStream();
+            //await pro.Image.CopyToAsync(dataStream);
             var product = new Product
             {
 
                 Name = pro.Name,
                 price = pro.price,
                 Quantity = pro.Quantity,
-                Image = dataStream.ToArray(),
+                Image = pro.Image,
                 Description = pro.Description,
                 Category_Id = pro.Category_Id
 
@@ -77,7 +77,7 @@ namespace API11.Controllers
 
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProductAsync(int id, [FromForm] CreateProductDto product)
+        public async Task<IActionResult> UpdateProductAsync(int id,  CreateProductDto product)
         {
             var pro = await _context.Products.FindAsync(id);
             if (pro == null)
@@ -85,19 +85,20 @@ namespace API11.Controllers
             var isValidCategory = await _context.categories.AnyAsync(c => c.Id == pro.Category_Id);
             if (!isValidCategory)
                 return BadRequest("Not Valide Category Id ");
-            if (product.Image != null)
-            {
-                if (!allowExxtention.Contains(Path.GetExtension(product.Image.FileName).ToLower()))
-                    return BadRequest("Onl .png or .jpg images are allow ");
-                using var dataStream = new MemoryStream();
-                await product.Image.CopyToAsync(dataStream);
-                pro.Image = dataStream.ToArray();
-            }
+            //if (product.Image != null)
+            //{
+            //    if (!allowExxtention.Contains(Path.GetExtension(product.Image.FileName).ToLower()))
+            //        return BadRequest("Onl .png or .jpg images are allow ");
+            //    using var dataStream = new MemoryStream();
+            //    await product.Image.CopyToAsync(dataStream);
+            //    pro.Image = dataStream.ToArray();
+            //}
             pro.Name = product.Name;
             pro.price = product.price;
             pro.Quantity = product.Quantity;
             pro.Description = product.Description;
             pro.Category_Id = product.Category_Id;
+            pro.Image = product.Image;
             await _context.SaveChangesAsync();
             return Ok(pro);
         }

@@ -16,7 +16,7 @@ namespace API11.DTO
         public int Quantity { get; set; }
         [Required]
         //[RegularExpression(@"^\w+\.(png|jpg)$")]
-        public IFormFile? Image { get; set; }
+        public string Image { get; set; }
         public string Description { get; set; }
         [ForeignKey("Category")]
         public int Category_Id { get; set; }

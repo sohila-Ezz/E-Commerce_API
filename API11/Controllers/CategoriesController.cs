@@ -45,7 +45,7 @@ namespace API11.Controllers
         // PUT: api/Category/5
         // To protect from overposting attacks, see 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategoryAsync(int id, [FromForm] CreateCategoryDto category)
+        public async Task<IActionResult> UpdateCategoryAsync(int id,  CreateCategoryDto category)
         {
             var cate = await _context.categories.FindAsync(id);
             if (cate == null)
@@ -60,7 +60,7 @@ namespace API11.Controllers
         // POST: api/Category
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> CreateCategoryAsync([FromForm] CreateCategoryDto cate)
+        public async Task<ActionResult<Category>> CreateCategoryAsync( CreateCategoryDto cate)
         {
             var category=new Category { Name= cate.Name };
             await _context.AddAsync(category);
